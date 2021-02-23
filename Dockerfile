@@ -1,10 +1,4 @@
-#
-# NOTE: THIS DOCKERFILE IS GENERATED VIA "update.sh"
-#
-# PLEASE DO NOT EDIT IT DIRECTLY.
-#
-
-FROM alpine:3.12
+FROM alpine:%%PLACEHOLDER%%
 
 # ensure local python is preferred over distribution python
 ENV PATH /usr/local/bin:$PATH
@@ -18,11 +12,13 @@ RUN set -eux; \
 	apk add --no-cache \
 # install ca-certificates so that HTTPS works consistently
 		ca-certificates \
+# and tzdata for PEP 615 (https://www.python.org/dev/peps/pep-0615/)
+		tzdata \
 	;
 # other runtime dependencies for Python are installed later
 
-ENV GPG_KEY 0D96DF4D4110E5C43FBFB17F2D347EA6AA65421D
-ENV PYTHON_VERSION 3.6.13
+ENV GPG_KEY %%PLACEHOLDER%%
+ENV PYTHON_VERSION %%PLACEHOLDER%%
 
 RUN set -ex \
 	&& apk add --no-cache --virtual .fetch-deps \
@@ -64,6 +60,7 @@ RUN set -ex \
 		tcl-dev \
 		tk \
 		tk-dev \
+		util-linux-dev \
 		xz-dev \
 		zlib-dev \
 # add build deps before removing fetch deps in case there's overlap
@@ -148,10 +145,10 @@ RUN cd /usr/local/bin \
 	&& ln -s python3-config python-config
 
 # if this is called "PIP_VERSION", pip explodes with "ValueError: invalid truth value '<VERSION>'"
-ENV PYTHON_PIP_VERSION 21.0.1
+ENV PYTHON_PIP_VERSION %%PLACEHOLDER%%
 # https://github.com/pypa/get-pip
-ENV PYTHON_GET_PIP_URL https://github.com/pypa/get-pip/raw/4be3fe44ad9dedc028629ed1497052d65d281b8e/get-pip.py
-ENV PYTHON_GET_PIP_SHA256 8006625804f55e1bd99ad4214fd07082fee27a1c35945648a58f9087a714e9d4
+ENV PYTHON_GET_PIP_URL %%PLACEHOLDER%%
+ENV PYTHON_GET_PIP_SHA256 %%PLACEHOLDER%%
 
 RUN set -ex; \
 	\
